@@ -1,4 +1,5 @@
 keras
-tensorflow
 numpy
+pytest
 six
+tensorflow
