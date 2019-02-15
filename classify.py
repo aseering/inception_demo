@@ -16,7 +16,7 @@ def run_inference_on_image(image):
         image: Image file name.
 
     Returns:
-        Nothing
+        Tuple of (Human-readable name (str), score (float between 0 and 1))
     """
     with open(image, 'rb') as f:
         image_data = f.read()
