@@ -47,6 +47,8 @@ import re
 import sys
 import tarfile
 import tempfile
+import warnings
+
 
 import numpy as np
 from six.moves import urllib
@@ -125,7 +127,8 @@ class NodeLookup(object):
     return self.node_lookup[node_id]
 
 
-NODE_LOOKUP = NodeLookup()
+# Initialized in 'init()'
+NODE_LOOKUP = None
 
 
 def create_graph():
@@ -158,11 +161,23 @@ def maybe_download_and_extract():
 
 
 def init():
+  # Disable messages that we're not going to do anything about
+  TF_CPP_MIN_LOG_LEVEL = os.environ.get('TF_CPP_MIN_LOG_LEVEL')
+  os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
   # Download on import if needed
   maybe_download_and_extract()
 
   # Load downloaded graph file into memory
   create_graph()
+
+  global NODE_LOOKUP
+  NODE_LOOKUP = NodeLookup()
+
+  if TF_CPP_MIN_LOG_LEVEL:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = TF_CPP_MIN_LOG_LEVEL
+  else:
+    del os.environ['TF_CPP_MIN_LOG_LEVEL']
 
 
 init()
