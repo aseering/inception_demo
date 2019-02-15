@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 
 from classify_helpers import NODE_LOOKUP, MODEL_DIR
 
@@ -44,5 +45,10 @@ def run_inference_on_image(image):
 
 
 if __name__ == '__main__':
-    print(run_inference_on_image(
-        os.path.join(MODEL_DIR, 'cropped_panda.jpg')))
+    if len(sys.argv) > 1:
+        image_path = sys.argv[1]
+    else:
+        # Default image of a panda
+        image_path = os.path.join(MODEL_DIR, 'cropped_panda.jpg')
+
+    print(run_inference_on_image(image_path))
